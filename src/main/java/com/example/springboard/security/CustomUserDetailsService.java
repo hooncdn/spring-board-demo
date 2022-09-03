@@ -1,4 +1,4 @@
-package com.example.springboard.security.service;
+package com.example.springboard.security;
 
 import com.example.springboard.domain.User;
 import com.example.springboard.repository.UserRepository;

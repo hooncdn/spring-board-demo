@@ -1,58 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <title>Document</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="fragments/head :: head (Home)"></div>
 <body class="flex flex-col items-center">
-<nav class="flex md:px-60 items-center justify-between w-full p-4 border">
-    <a class="font-bold text-lg text-green-600 bg-slate-50" href=""
-    >Spring Board</a
-    >
-
-    <ul class="flex items-center text-sm font-medium text-gray-500 space-x-2">
-        <li>
-            <a class="px-3 text-base text-green-600 font-semibold" href="">
-                Home
-            </a>
-        </li>
-        <li>
-            <a class="px-3 text-base font-semibold" href="/login"> Login </a>
-        </li>
-    </ul>
-</nav>
+<div th:replace="fragments/nav :: nav"></div>
 <header class="my-16">
     <div class="px-4 py-8 mx-auto max-w-screen-xl sm:py-12 sm:px-6 lg:px-8">
         <div class="sm:justify-between sm:items-center sm:flex">
             <div class="text-center sm:text-left">
-                <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">
-                    Welcome Back, User!
-                </h1>
+                <h1 th:text="'Welcome back, ' + ${#authentication.getPrincipal().getUsername}" sec:authorize="isAuthenticated()" class="text-2xl font-bold text-gray-900 sm:text-3xl"></h1>
 
-                <p class="mt-1.5 text-sm text-gray-500">
+                <p sec:authorize="isAuthenticated()" class="mt-1.5 text-sm text-gray-500">
                     Let's write a new post! 🎉
                 </p>
-            </div>
 
-            <div
-                    class="flex flex-col mt-4 gap-4 sm:flex-row sm:mt-0 sm:items-center"
-            >
-                <button
-                        class="block md:ml-16 px-5 py-3 text-sm font-medium text-white bg-gray-300 rounded-lg transition hover:bg-green-600 focus:outline-none focus:ring"
-                        type="button"
-                >
-                    Create Post
-                </button>
-                <button
-                        class="block px-5 py-3 text-sm font-medium text-white bg-gray-300 rounded-lg transition hover:bg-green-600 focus:outline-none focus:ring"
-                        type="button"
-                >
-                    update Post
-                </button>
+                <h1 sec:authorize="isAnonymous()" class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                    Let's write a new post! 🎉
+                </h1>
+
+                <p sec:authorize="isAnonymous()" class="mt-1.5 text-sm text-gray-500">
+                    You can write a post by logging in! ✨
+                </p>
             </div>
         </div>
     </div>
@@ -124,80 +92,7 @@
         </table>
     </div>
 </div>
-
-<ol class="flex justify-center mt-20 text-xs font-medium space-x-1">
-    <li>
-        <a
-                href="/?page=1"
-                class="inline-flex items-center justify-center w-8 h-8 border border-gray-100 rounded"
-        >
-            <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-3 h-3"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-            >
-                <path
-                        fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd"
-                />
-            </svg>
-        </a>
-    </li>
-
-    <li>
-        <a
-                href="/?page=1"
-                class="block w-8 h-8 text-center border border-gray-100 rounded leading-8"
-        >
-            1
-        </a>
-    </li>
-
-    <li
-            class="block w-8 h-8 text-center text-white bg-green-600 border-green-600 rounded leading-8"
-    >
-        2
-    </li>
-
-    <li>
-        <a
-                href="/?page=3"
-                class="block w-8 h-8 text-center border border-gray-100 rounded leading-8"
-        >
-            3
-        </a>
-    </li>
-
-    <li>
-        <a
-                href="/?page=4"
-                class="block w-8 h-8 text-center border border-gray-100 rounded leading-8"
-        >
-            4
-        </a>
-    </li>
-
-    <li>
-        <a
-                href="/?page=3"
-                class="inline-flex items-center justify-center w-8 h-8 border border-gray-100 rounded"
-        >
-            <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-3 h-3"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-            >
-                <path
-                        fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"
-                />
-            </svg>
-        </a>
-    </li>
-</ol>
+<div th:replace="fragments/pagination :: pagination"></div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

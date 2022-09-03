@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<nav th:fragment="nav" class="flex md:px-60 items-center justify-between w-full p-4 border">
+    <a class="font-bold text-lg text-green-600 bg-slate-50" href="">Spring Board</a>
+
+    <ul class="flex items-center text-sm font-medium text-gray-500 space-x-2">
+        <li>
+            <a th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/}">
+                Home
+            </a>
+        </li>
+        <li sec:authorize="isAnonymous()">
+            <a th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/login}">
+                Login
+            </a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <a th:classappend="${#httpServletRequest.getRequestURI() == '/my' ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/my}">
+                My post
+            </a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <a class="px-3 text-base font-semibold" th:href="@{/logout}">Logout</a>
+        </li>
+    </ul>
+</nav>
+</html>

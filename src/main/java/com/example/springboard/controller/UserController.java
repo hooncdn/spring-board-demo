@@ -31,6 +31,11 @@ public class UserController {
         dataBinder.addValidators(signUpValidator);
     }
 
+    @GetMapping("/login")
+    public String getLogin() {
+        return "/user/login";
+    }
+
     @GetMapping("/join")
     public String getJoin(Model model) {
         model.addAttribute("form", new SignUpForm());

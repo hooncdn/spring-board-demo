@@ -1,7 +1,7 @@
 package com.example.springboard.config;
 
 import com.example.springboard.repository.UserRepository;
-import com.example.springboard.security.service.CustomUserDetailsService;
+import com.example.springboard.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +44,12 @@ public class SecurityConfig {
                     .anyRequest()
                         .authenticated()
                     .and()
-                .formLogin();
+                .formLogin()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/")
+                    .permitAll();
+
 
         return http.build();
     }
