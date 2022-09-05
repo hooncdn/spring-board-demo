@@ -1,5 +1,6 @@
 package com.example.springboard.controller;
 
+import com.example.springboard.domain.Role;
 import com.example.springboard.domain.User;
 import com.example.springboard.domain.dto.SignUpForm;
 import com.example.springboard.service.UserService;
@@ -66,7 +67,7 @@ public class UserController {
         User user = User.builder()
                 .username(signUpForm.getUsername())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
-                .role("USER")
+                .role(Role.USER)
                 .build();
 
 

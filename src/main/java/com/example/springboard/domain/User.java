@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -18,10 +20,14 @@ public class User {
 
     private String password;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    List<Post> posts = new ArrayList<>();
 
     @Builder
-    public User(Long id, String username, String password, String role) {
+    public User(Long id, String username, String password, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;

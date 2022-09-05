@@ -1,5 +1,6 @@
 package com.example.springboard.security;
 
+import com.example.springboard.domain.Role;
 import com.example.springboard.domain.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class UserPrincipal implements UserDetails {
 
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = Collections
-                .singletonList(new SimpleGrantedAuthority(user.getRole()));
+                .singletonList(new SimpleGrantedAuthority(Role.USER.getValue()));
 
         return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), authorities);
     }
