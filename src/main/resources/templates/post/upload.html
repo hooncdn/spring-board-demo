@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <title>Spring board - Upload</title>
+</head>
+<body class="flex flex-col items-center justify-center">
+<div th:replace="fragments/nav :: nav"></div>
+<p class="text-green-600 text-xl font-semibold my-10">Write a post</p>
+
+<form class="flex flex-col items-end">
+    <div>
+        <textarea id="content" name="content"></textarea>
+    </div>
+    <button class="my-5 px-5 py-3 font-bold text-white bg-green-600 rounded-lg" type="submit">
+        Submit
+    </button>
+    <script>
+        CKEDITOR.replace('content');
+    </script>
+</form>
+</body>
+</html>
