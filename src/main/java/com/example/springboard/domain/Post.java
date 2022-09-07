@@ -1,11 +1,13 @@
 package com.example.springboard.domain;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
+@Getter
 @Entity
 @RequiredArgsConstructor
 public class Post {
@@ -19,16 +21,21 @@ public class Post {
     private String title;
     private String content;
     private int views;
+    private Date date;
     private String author;
-
-    private LocalDateTime postDate;
+    private String status;
 
     @Builder
-    public Post(Long id, String title, String content, String author, LocalDateTime postDate) {
-        this.id = id;
+
+    public Post(User user, String title, String content, int views, Date date, String author) {
+        this.user = user;
         this.title = title;
         this.content = content;
+        this.views = views;
+        this.date = date;
         this.author = author;
-        this.postDate = postDate;
+
+        user.getPosts().add(this);
+
     }
 }

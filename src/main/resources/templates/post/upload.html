@@ -9,13 +9,23 @@
     <title>Spring board - Upload</title>
 </head>
 <body class="flex flex-col items-center justify-center">
-<div th:replace="fragments/nav :: nav"></div>
 <p class="text-green-600 text-xl font-semibold my-10">Write a post</p>
 
-<form class="flex flex-col items-end">
+<form th:action="@{/post/create}" th:object="${form}" method="post" class="flex flex-col items-end">
+    <input
+            th:field="*{title}"
+            name="title"
+            type="text"
+            id="title"
+            class="w-full my-2 p-4 pr-12 text-sm border-gray-300 shadow rounded-lg border outline-none"
+            placeholder="Enter title"
+    />
+    <p th:if="${#fields.hasErrors('title')}" class="text-red-600 text-sm" th:errors="*{title}"></p>
+
     <div>
-        <textarea id="content" name="content"></textarea>
+        <textarea th:field="*{content}" id="content" name="content"></textarea>
     </div>
+    <p th:if="${#fields.hasErrors('content')}" class="text-red-600 text-sm" th:errors="*{content}"></p>
     <button class="my-5 px-5 py-3 font-bold text-white bg-green-600 rounded-lg" type="submit">
         Submit
     </button>
