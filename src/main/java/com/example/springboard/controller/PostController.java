@@ -12,10 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Date;
@@ -27,6 +24,15 @@ public class PostController {
 
     private final UserService userService;
     private final PostService postService;
+
+    @GetMapping("/{id}")
+    public String view(@PathVariable Long id, Model model) {
+        Post post = postService.findById(id);
+
+        model.addAttribute("post", post);
+
+        return "post/view";
+    }
 
     @GetMapping("/create")
     public String getCreate(Model model) {

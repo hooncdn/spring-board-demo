@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="fragments/head :: head (${post.title})"></div>
+<body class="flex flex-col items-center justify-center">
+<div th:replace="fragments/nav :: nav"></div>
+<p th:text="${post.title}" class="text-green-600 text-xl font-semibold my-10"></p>
+
+</body>
+</html>
