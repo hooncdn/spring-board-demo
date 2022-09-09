@@ -1,8 +1,10 @@
 package com.example.springboard.controller;
 
+import com.example.springboard.domain.Post;
 import com.example.springboard.domain.Role;
 import com.example.springboard.domain.User;
-import com.example.springboard.domain.dto.SignUpForm;
+import com.example.springboard.dto.PostListResponse;
+import com.example.springboard.dto.UserRequest;
 import com.example.springboard.service.UserService;
 import com.example.springboard.validator.SignUpValidator;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,6 +39,22 @@ public class UserController {
     @InitBinder
     public void init(WebDataBinder dataBinder) {
         dataBinder.addValidators(signUpValidator);
+    }
+
+    @GetMapping("/my")
+    public String myPage(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+
+        List<PostListResponse> postList = user.getPosts()
+                .stream()
+                .map(PostListResponse::new)
+                .toList();
+
+        model.addAttribute("posts", postList);
+
+        return "/post/my";
+
     }
 
     @GetMapping("/login")
@@ -53,25 +74,25 @@ public class UserController {
 
     @GetMapping("/join")
     public String getJoin(Model model) {
-        model.addAttribute("form", new SignUpForm());
+        model.addAttribute("form", new UserRequest());
         return "user/register";
     }
 
     @PostMapping("/join")
-    public String join(@Valid @ModelAttribute(value = "form") SignUpForm signUpForm, BindingResult bindingResult) {
+    public String join(@Valid @ModelAttribute(value = "form") UserRequest userRequest, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "user/register";
         }
 
         User user = User.builder()
-                .username(signUpForm.getUsername())
-                .password(passwordEncoder.encode(signUpForm.getPassword()))
+                .username(userRequest.getUsername())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
                 .role(Role.USER)
                 .build();
 
 
-        userService.createUser(user);
+        userService.save(user);
 
         return "redirect:/";
     }

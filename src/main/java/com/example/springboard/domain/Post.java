@@ -26,7 +26,6 @@ public class Post {
     private String status;
 
     @Builder
-
     public Post(User user, String title, String content, int views, Date date, String author) {
         this.user = user;
         this.title = title;
@@ -37,5 +36,9 @@ public class Post {
 
         user.getPosts().add(this);
 
+    }
+
+    public void increaseViews(int views) {
+        this.views += views;
     }
 }

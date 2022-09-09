@@ -1,4 +1,4 @@
-package com.example.springboard.domain.dto;
+package com.example.springboard.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter @Setter
-public class SignUpForm {
+public class UserRequest {
 
     @NotBlank(message = "Can not be blank")
     @Length(min = 3,max = 15, message = "Must be between 3 and 15 in length")

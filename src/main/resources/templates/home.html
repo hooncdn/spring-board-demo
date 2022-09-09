@@ -29,7 +29,7 @@
 <div class="flex my-2 items-center -space-x-4 hover:space-x-1">
     <button
             class="z-10 block p-4 text-green-700 bg-green-100 border-2 border-white rounded-full transition-all active:bg-green-50 hover:scale-110 focus:outline-none focus:ring"
-            th:onclick="|location.href='@{post/create}'|"
+            th:onclick="|location.href='@{/post/create}'|"
             type="button"
     >
         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,6 +39,7 @@
 
     <button
             class="z-20 block p-4 text-blue-700 bg-blue-100 border-2 border-white rounded-full transition-all active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
+            th:onclick="|location.href='@{/my}'|"
             type="button"
     >
         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,7 +61,9 @@
 
         <tbody class="divide-y divide-gray-200">
             <tr th:each="post : ${posts}" class="divide-x divide-gray-100">
-                <td th:text="${post.title}" class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap"></td>
+                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">
+                    <a class="underline text-blue-600" th:text="${post.title}" th:href="@{/post/{id}(id = ${post.id})}"></a>
+                </td>
                 <td th:text="${post.views}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>
                 <td th:text="${post.date}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>
                 <td th:text="${post.author}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>

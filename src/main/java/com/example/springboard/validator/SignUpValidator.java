@@ -1,7 +1,7 @@
 package com.example.springboard.validator;
 
 import com.example.springboard.domain.User;
-import com.example.springboard.domain.dto.SignUpForm;
+import com.example.springboard.dto.UserRequest;
 import com.example.springboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,12 @@ public class SignUpValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return SignUpForm.class.isAssignableFrom(clazz);
+        return UserRequest.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        SignUpForm user = (SignUpForm) target;
+        UserRequest user = (UserRequest) target;
 
         String username = user.getUsername();
         User findUser = userRepository.findByUsername(username);

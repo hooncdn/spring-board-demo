@@ -1,4 +1,4 @@
-package com.example.springboard.domain.dto;
+package com.example.springboard.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 
 @Getter @Setter
-public class UploadPostForm {
+public class PostRequest {
 
     @NotBlank(message = "Can not be blank")
     @Length(min = 3, max = 20, message = "Must be between 3 and 20 in length")

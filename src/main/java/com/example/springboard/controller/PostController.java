@@ -2,9 +2,8 @@ package com.example.springboard.controller;
 
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.User;
-import com.example.springboard.domain.dto.UploadPostForm;
-import com.example.springboard.repository.PostRepository;
-import com.example.springboard.repository.UserRepository;
+import com.example.springboard.dto.PostResponse;
+import com.example.springboard.dto.PostRequest;
 import com.example.springboard.service.PostService;
 import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,20 +27,23 @@ public class PostController {
     @GetMapping("/{id}")
     public String view(@PathVariable Long id, Model model) {
         Post post = postService.findById(id);
+        postService.increaseView(post);
 
-        model.addAttribute("post", post);
+        PostResponse postResponse = new PostResponse(post);
+
+        model.addAttribute("post", postResponse);
 
         return "post/view";
     }
 
     @GetMapping("/create")
     public String getCreate(Model model) {
-        model.addAttribute("form", new UploadPostForm());
+        model.addAttribute("post", new PostRequest());
         return "post/upload";
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute(value = "form") UploadPostForm uploadPostForm, BindingResult bindingResult) {
+    public String create(@Valid @ModelAttribute(value = "form") PostRequest postRequest, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "post/upload";
@@ -55,14 +57,15 @@ public class PostController {
 
         Post post = Post.builder()
                 .user(user)
-                .title(uploadPostForm.getTitle())
-                .content(uploadPostForm.getContent())
+                .title(postRequest.getTitle())
+                .content(postRequest.getContent())
                 .views(0)
                 .date(date)
                 .author(username)
                 .build();
 
         postService.save(post);
+
         return "redirect:/";
     }
 }

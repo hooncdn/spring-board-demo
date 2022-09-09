@@ -3,7 +3,44 @@
 <div th:replace="fragments/head :: head (${post.title})"></div>
 <body class="flex flex-col items-center justify-center">
 <div th:replace="fragments/nav :: nav"></div>
-<p th:text="${post.title}" class="text-green-600 text-xl font-semibold my-10"></p>
+<div class="overflow-hidden overflow-x-auto border w-4/6 mt-5">
+    <table class="min-w-full text-sm divide-y divide-gray-200">
+        <thead>
+        <tr class="bg-gray-50">
+            <th
+                    class="px-4 py-2 font-medium text-left border-r text-gray-900 whitespace-nowrap"
+            >
+                Title
+            </th>
+            <th
+                    class="px-4 py-2 font-medium text-left border-r text-gray-900 whitespace-nowrap"
+            >
+                Views
+            </th>
+            <th
+                    class="px-4 py-2 font-medium text-left border-r text-gray-900 whitespace-nowrap"
+            >
+                Author
+            </th>
+            <th
+                    class="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap"
+            >
+                Date
+            </th>
+        </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-100">
+        <tr>
+            <td th:text="${post.title}" class="px-4 py-2 font-medium border-r text-gray-900 whitespace-nowrap"></td>
+            <td th:text="${post.views}" class="px-4 py-2 text-gray-700 border-r whitespace-nowrap"></td>
+            <td th:text="${post.author}" class="px-4 py-2 text-gray-700 border-r whitespace-nowrap"></td>
+            <td th:text="${post.date}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:utext="${post.content}" class="flex flex-col w-4/6 border-b border-l border-r p-5"></div>
 
 </body>
 </html>

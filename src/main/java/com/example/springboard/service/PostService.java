@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-
     private final PostRepository postRepository;
 
     @Transactional
@@ -19,12 +18,20 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public List<Post> findAll() {
-        return postRepository.findAll();
-    }
-
     public Post findById(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
     }
+
+    @Transactional(readOnly = true)
+    public List<Post> findAll() {
+        return postRepository.findAll();
+    }
+
+    @Transactional
+    public void increaseView(Post post) {
+        post.increaseViews(1);
+    }
+
+
 }
