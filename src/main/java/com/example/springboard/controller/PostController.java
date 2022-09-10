@@ -2,6 +2,7 @@ package com.example.springboard.controller;
 
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.User;
+import com.example.springboard.dto.PostListResponse;
 import com.example.springboard.dto.PostResponse;
 import com.example.springboard.dto.PostRequest;
 import com.example.springboard.service.PostService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Date;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute(value = "form") PostRequest postRequest, BindingResult bindingResult) {
+    public String create(@Valid @ModelAttribute(value = "post") PostRequest postRequest, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "post/upload";
@@ -67,5 +69,45 @@ public class PostController {
         postService.save(post);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/update/{id}")
+    public String getUpdate(Model model, @PathVariable Long id) {
+
+        if (!postService.validateId(id)) {
+            return "error/404";
+        }
+
+        Post post = postService.findById(id);
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String author = post.getAuthor();
+
+
+        if (!username.equals(author)) {
+            return "error/403";
+        }
+
+        PostRequest postRequest = new PostRequest(id, post.getTitle(), post.getContent());
+
+        model.addAttribute("post", postRequest);
+        model.addAttribute("id", id);
+
+        return "post/update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@Valid @ModelAttribute(value = "post") PostRequest postRequest, BindingResult bindingResult, @PathVariable Long id) {
+
+        if (bindingResult.hasErrors()) {
+            return "post/update";
+        }
+
+        System.out.println(postRequest.getTitle());
+
+        postService.update(id, postRequest.getTitle(), postRequest.getContent());
+
+        return "redirect:/my";
+
     }
 }

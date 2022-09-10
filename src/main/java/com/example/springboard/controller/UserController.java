@@ -1,6 +1,5 @@
 package com.example.springboard.controller;
 
-import com.example.springboard.domain.Post;
 import com.example.springboard.domain.Role;
 import com.example.springboard.domain.User;
 import com.example.springboard.dto.PostListResponse;
@@ -24,9 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,22 +36,6 @@ public class UserController {
     @InitBinder
     public void init(WebDataBinder dataBinder) {
         dataBinder.addValidators(signUpValidator);
-    }
-
-    @GetMapping("/my")
-    public String myPage(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findByUsername(username);
-
-        List<PostListResponse> postList = user.getPosts()
-                .stream()
-                .map(PostListResponse::new)
-                .toList();
-
-        model.addAttribute("posts", postList);
-
-        return "/post/my";
-
     }
 
     @GetMapping("/login")
@@ -95,5 +76,21 @@ public class UserController {
         userService.save(user);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/my")
+    public String myPage(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+
+        List<PostListResponse> postList = user.getPosts()
+                .stream()
+                .map(PostListResponse::new)
+                .toList();
+
+        model.addAttribute("posts", postList);
+
+        return "/post/my";
+
     }
 }

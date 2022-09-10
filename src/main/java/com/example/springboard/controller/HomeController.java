@@ -1,6 +1,5 @@
 package com.example.springboard.controller;
 
-import com.example.springboard.domain.Post;
 import com.example.springboard.dto.PostListResponse;
 import com.example.springboard.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor

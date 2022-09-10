@@ -10,14 +10,19 @@
                 Home
             </a>
         </li>
-        <li sec:authorize="isAnonymous()">
-            <a th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/login}">
-                Login
+        <li>
+            <a th:classappend="${#httpServletRequest.getRequestURI().startsWith('/post') ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/post}">
+                Post
             </a>
         </li>
         <li sec:authorize="isAuthenticated()">
             <a th:classappend="${#httpServletRequest.getRequestURI() == '/my' ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/my}">
                 My
+            </a>
+        </li>
+        <li sec:authorize="isAnonymous()">
+            <a th:classappend="${#httpServletRequest.getRequestURI() == '/login' ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/login}">
+                Login
             </a>
         </li>
         <li sec:authorize="isAuthenticated()">

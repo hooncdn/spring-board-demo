@@ -92,6 +92,7 @@
                 <div class="flex">
                     <button
                             class="z-20 mr-1 block p-4 text-blue-700 bg-blue-100 border-2 border-white rounded-full transition-all active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
+                            th:onclick="|location.href='@{post/update/{id}(id = ${post.id})}'|"
                             type="button"
                     >
                         <svg

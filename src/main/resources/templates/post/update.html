@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/ckeditor/ckeditor.js"></script>
+    <title>Spring board - Update</title>
+</head>
+<body class="flex flex-col items-center justify-center">
+<p class="text-green-600 text-xl font-semibold my-10">Update post</p>
+
+<form th:action="@{/post/update/{id}(id = ${id})}" th:object="${post}" method="post" class="flex flex-col items-end">
+    <input
+            th:field="*{title}"
+            th:value="${post.title}"
+            name="title"
+            type="text"
+            id="title"
+            class="w-full my-2 p-4 pr-12 text-sm border-gray-300 shadow rounded-lg border outline-none"
+            placeholder="Enter title"
+    />
+    <p th:if="${#fields.hasErrors('title')}" class="text-red-600 text-sm" th:errors="*{title}"></p>
+
+    <div>
+        <textarea th:value="${post.content}" th:field="*{content}" id="content" name="content"></textarea>
+    </div>
+    <p th:if="${#fields.hasErrors('content')}" class="text-red-600 text-sm" th:errors="*{content}"></p>
+    <button class="my-5 px-5 py-3 font-bold text-white bg-green-600 rounded-lg" type="submit">
+        Submit
+    </button>
+    <script>
+        CKEDITOR.replace('content');
+    </script>
+</form>
+</body>
+</html>
