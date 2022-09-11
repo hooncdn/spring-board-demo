@@ -112,6 +112,7 @@
                     </button>
                     <button
                             class="z-30 block ml-1 p-4 text-red-700 bg-red-100 border-2 border-white rounded-full transition-all hover:scale-110 focus:outline-none focus:ring active:bg-red-50"
+                            th:onclick="|location.href='@{/post/delete/{id}(id = ${post.id})}'|"
                             type="button"
                     >
                         <svg

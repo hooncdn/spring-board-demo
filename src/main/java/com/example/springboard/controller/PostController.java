@@ -52,6 +52,7 @@ public class PostController {
         }
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         User user = userService.findByUsername(username);
 
         long millis = System.currentTimeMillis();
@@ -74,24 +75,10 @@ public class PostController {
     @GetMapping("/update/{id}")
     public String getUpdate(Model model, @PathVariable Long id) {
 
-        if (!postService.validateId(id)) {
-            return "error/404";
-        }
-
         Post post = postService.findById(id);
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String author = post.getAuthor();
-
-
-        if (!username.equals(author)) {
-            return "error/403";
-        }
-
         PostRequest postRequest = new PostRequest(id, post.getTitle(), post.getContent());
 
         model.addAttribute("post", postRequest);
-        model.addAttribute("id", id);
 
         return "post/update";
     }
@@ -103,11 +90,25 @@ public class PostController {
             return "post/update";
         }
 
-        System.out.println(postRequest.getTitle());
-
         postService.update(id, postRequest.getTitle(), postRequest.getContent());
 
         return "redirect:/my";
 
+    }
+
+    @GetMapping("/delete/{id}")
+    public String getDelete(@PathVariable Long id, Model model) {
+
+        model.addAttribute("id", id);
+        return "post/delete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+
+        Post post = postService.findById(id);
+        postService.delete(post);
+
+        return "redirect:/my";
     }
 }

@@ -54,8 +54,8 @@
             <tr class="divide-x divide-gray-100">
                 <th class="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">Title</th>
                 <th class="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">Views</th>
-                <th class="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">Date</th>
                 <th class="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">Author</th>
+                <th class="px-4 py-2 font-medium text-left text-gray-900 whitespace-nowrap">Date</th>
             </tr>
         </thead>
 
@@ -65,8 +65,8 @@
                     <a class="underline text-blue-600" th:text="${post.title}" th:href="@{/post/{id}(id = ${post.id})}"></a>
                 </td>
                 <td th:text="${post.views}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>
-                <td th:text="${post.date}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>
                 <td th:text="${post.author}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>
+                <td th:text="${post.date}" class="px-4 py-2 text-gray-700 whitespace-nowrap"></td>
             </tr>
         </tbody>
     </table>

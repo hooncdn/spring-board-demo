@@ -1,0 +1,46 @@
+package com.example.springboard.inteceptor;
+
+import com.example.springboard.domain.Post;
+import com.example.springboard.service.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
+@Component
+@RequiredArgsConstructor
+public class CheckWriterInterceptor implements HandlerInterceptor {
+
+    private final PostService postService;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        Map<?, ?> pathVariables = (Map<?, ?>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Object pathVariable = pathVariables.get("id");
+
+        Long id = Long.valueOf(pathVariable.toString());
+
+        if (!postService.validateId(id)) {
+            response.sendRedirect("/error/404");
+            return false;
+        }
+
+        Post post = postService.findById(id);
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String author = post.getAuthor();
+
+        if (!username.equals(author)) {
+            response.sendRedirect("/error/403");
+            return false;
+        }
+
+        return true;
+    }
+}

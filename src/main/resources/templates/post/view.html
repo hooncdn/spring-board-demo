@@ -41,10 +41,10 @@
     </table>
 </div>
 <div th:utext="${post.content}" class="flex flex-col w-4/6 border-b border-l border-r p-5"></div>
-<div th:classappend="${#authentication.getPrincipal().getUsername() == post.author ? '' : 'hidden'}" class="flex w-4/6 m-2 justify-end">
+<div th:if="${#authentication.getPrincipal().getUsername() == post.author}" class="flex w-4/6 m-2 justify-end">
     <button
             class="z-20 mr-1 block p-4 text-blue-700 bg-blue-100 border-2 border-white rounded-full transition-all active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
-            th:onclick="|location.href='@{post/update/{id}(id = ${post.id})}'|"
+            th:onclick="|location.href='@{/post/update/{id}(id = ${post.id})}'|"
             type="button"
     >
         <svg
@@ -64,6 +64,7 @@
     </button>
     <button
             class="z-30 block ml-1 p-4 text-red-700 bg-red-100 border-2 border-white rounded-full transition-all hover:scale-110 focus:outline-none focus:ring active:bg-red-50"
+            th:onclick="|location.href='@{/post/delete/{id}(id = ${post.id})}'|"
             type="button"
     >
         <svg
