@@ -3,6 +3,8 @@ package com.example.springboard.service;
 import com.example.springboard.domain.Post;
 import com.example.springboard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,11 @@ public class PostService {
     @Transactional
     public void increaseView(Post post) {
         post.increaseViews(1);
+    }
+
+    @Transactional
+    public Page<Post> pageList(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     public boolean validateId(Long id) {

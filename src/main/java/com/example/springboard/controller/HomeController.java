@@ -1,11 +1,17 @@
 package com.example.springboard.controller;
 
+import com.example.springboard.domain.Post;
 import com.example.springboard.dto.PostListResponse;
 import com.example.springboard.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,14 +22,15 @@ public class HomeController {
     private final PostService postService;
 
     @GetMapping
-    public String home(Model model) {
+    public String home(Model model,
+                       @PageableDefault(size = 5, sort = "views", direction = Sort.Direction.DESC)
+                       Pageable pageable) {
 
-        List<PostListResponse> postList = postService.findAll()
-                .stream()
-                .map(PostListResponse::new)
-                .toList();
+        Page<Post> pageList = postService.pageList(pageable);
+        Page<PostListResponse> posts = pageList.map(PostListResponse::new);
 
-        model.addAttribute("posts", postList);
+        model.addAttribute("totalPages", posts.getTotalPages() - 1);
+        model.addAttribute("posts", posts);
 
         return "home";
     }
