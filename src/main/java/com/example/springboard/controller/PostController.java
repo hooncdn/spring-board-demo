@@ -2,9 +2,8 @@ package com.example.springboard.controller;
 
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.User;
-import com.example.springboard.dto.PostListResponse;
-import com.example.springboard.dto.PostResponse;
 import com.example.springboard.dto.PostRequest;
+import com.example.springboard.dto.PostResponse;
 import com.example.springboard.service.PostService;
 import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Date;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
