@@ -1,7 +1,10 @@
 package com.example.springboard.controller;
 
+import com.example.springboard.domain.Comment;
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.User;
+import com.example.springboard.dto.CommentRequest;
+import com.example.springboard.dto.CommentResponse;
 import com.example.springboard.dto.PostRequest;
 import com.example.springboard.dto.PostResponse;
 import com.example.springboard.service.PostService;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,20 +31,52 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/{id}")
-    public String view(@PathVariable Long id, Model model) {
+    public String viewForm(@PathVariable Long id, Model model) {
         Post post = postService.findById(id);
         postService.increaseView(post);
 
         PostResponse postResponse = new PostResponse(post);
+        CommentResponse commentResponse = new CommentResponse();
 
         model.addAttribute("post", postResponse);
+        model.addAttribute("comment", commentResponse);
 
         return "post/view";
     }
 
+    @PostMapping("/{id}")
+    public String comment(@Valid @ModelAttribute(value = "comment") CommentRequest commentRequest, BindingResult bindingResult, Model model, @PathVariable Long id) {
+
+        Post post = postService.findById(id);
+
+        if (bindingResult.hasErrors()) {
+            PostResponse postResponse = new PostResponse(post);
+            model.addAttribute("post", postResponse);
+            return "/post/view";
+        }
+
+        User user = post.getUser();
+
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm:ss");
+
+        Comment comment = Comment.builder()
+                .user(user)
+                .post(post)
+                .writer(user.getUsername())
+                .content(commentRequest.getContent())
+                .date(date.format(formatter))
+                .build();
+
+
+        postService.uploadComment(id, comment);
+
+        return "redirect:/post/{id}";
+    }
+
     @GetMapping("/create")
-    public String getCreate(Model model) {
-        model.addAttribute("post", new PostRequest());
+    public String createForm(Model model) {
+        model.addAttribute("post", new PostResponse());
         return "post/upload";
     }
 
@@ -71,12 +109,12 @@ public class PostController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUpdate(Model model, @PathVariable Long id) {
+    public String updateForm(Model model, @PathVariable Long id) {
 
         Post post = postService.findById(id);
-        PostRequest postRequest = new PostRequest(id, post.getTitle(), post.getContent());
+        PostResponse postResponse = new PostResponse(post);
 
-        model.addAttribute("post", postRequest);
+        model.addAttribute("post", postResponse);
 
         return "post/update";
     }
@@ -95,7 +133,7 @@ public class PostController {
     }
 
     @GetMapping("/delete/{id}")
-    public String getDelete(@PathVariable Long id, Model model) {
+    public String deleteForm(@PathVariable Long id, Model model) {
 
         model.addAttribute("id", id);
         return "post/delete";
@@ -109,4 +147,5 @@ public class PostController {
 
         return "redirect:/my";
     }
+
 }

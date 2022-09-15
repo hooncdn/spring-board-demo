@@ -23,7 +23,7 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
     private String title;
@@ -53,5 +53,9 @@ public class Post {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 }

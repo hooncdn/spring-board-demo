@@ -1,5 +1,6 @@
 package com.example.springboard.service;
 
+import com.example.springboard.domain.Comment;
 import com.example.springboard.domain.Post;
 import com.example.springboard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,14 @@ public class PostService {
 
         findPost.update(title, content);
 
+    }
+
+    @Transactional
+    public void uploadComment(Long id, Comment comment) {
+        Post findPost = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("The content is missing"));
+
+        findPost.addComment(comment);
     }
 
     public Post findById(Long id) {

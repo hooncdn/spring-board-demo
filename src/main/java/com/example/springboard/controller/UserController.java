@@ -4,6 +4,7 @@ import com.example.springboard.domain.Role;
 import com.example.springboard.domain.User;
 import com.example.springboard.dto.PostListResponse;
 import com.example.springboard.dto.UserRequest;
+import com.example.springboard.dto.UserResponse;
 import com.example.springboard.service.UserService;
 import com.example.springboard.validator.SignUpValidator;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class UserController {
     private final SignUpValidator signUpValidator;
     private final PasswordEncoder passwordEncoder;
 
-    @InitBinder
+    @InitBinder("UserRequest")
     public void init(WebDataBinder dataBinder) {
         dataBinder.addValidators(signUpValidator);
     }
@@ -54,8 +55,8 @@ public class UserController {
     }
 
     @GetMapping("/join")
-    public String getJoin(Model model) {
-        model.addAttribute("form", new UserRequest());
+    public String joinForm(Model model) {
+        model.addAttribute("form", new UserResponse());
         return "user/register";
     }
 

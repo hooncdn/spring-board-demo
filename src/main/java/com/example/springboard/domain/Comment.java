@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
-
 
 @Entity
 @Getter
@@ -22,16 +20,24 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
+
     private String writer;
     private String content;
-    private Date date;
+    private String date;
 
     @Builder
-    public Comment(Long id, User user, String writer, String content, Date date) {
+    public Comment(Long id, User user, Post post, String writer, String content, String date) {
         this.id = id;
         this.user = user;
+        this.post = post;
         this.writer = writer;
         this.content = content;
         this.date = date;
+
+        user.getComments().add(this);
+        post.getComments().add(this);
     }
 }
