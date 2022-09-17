@@ -3,10 +3,7 @@ package com.example.springboard.controller;
 import com.example.springboard.domain.Comment;
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.User;
-import com.example.springboard.dto.CommentRequest;
-import com.example.springboard.dto.CommentResponse;
-import com.example.springboard.dto.PostRequest;
-import com.example.springboard.dto.PostResponse;
+import com.example.springboard.dto.*;
 import com.example.springboard.service.PostService;
 import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +34,14 @@ public class PostController {
 
         PostResponse postResponse = new PostResponse(post);
         CommentResponse commentResponse = new CommentResponse();
+        List<CommentResponse> commentResponseList = post.getComments()
+                .stream()
+                .map(CommentResponse::new)
+                .toList();
 
         model.addAttribute("post", postResponse);
-        model.addAttribute("comment", commentResponse);
+        model.addAttribute("commentResponse", commentResponse);
+        model.addAttribute("comments", commentResponseList);
 
         return "post/view";
     }
@@ -108,7 +110,7 @@ public class PostController {
         return "redirect:/";
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/{id}/update")
     public String updateForm(Model model, @PathVariable Long id) {
 
         Post post = postService.findById(id);
@@ -119,7 +121,7 @@ public class PostController {
         return "post/update";
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/{id}/update")
     public String update(@Valid @ModelAttribute(value = "post") PostRequest postRequest, BindingResult bindingResult, @PathVariable Long id) {
 
         if (bindingResult.hasErrors()) {
@@ -132,14 +134,14 @@ public class PostController {
 
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/{id}/delete")
     public String deleteForm(@PathVariable Long id, Model model) {
 
         model.addAttribute("id", id);
         return "post/delete";
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
 
         Post post = postService.findById(id);
@@ -147,5 +149,4 @@ public class PostController {
 
         return "redirect:/my";
     }
-
 }

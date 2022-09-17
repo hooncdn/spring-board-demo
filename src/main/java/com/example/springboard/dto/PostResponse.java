@@ -25,7 +25,7 @@ public class PostResponse {
 
     private User user;
 
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommentResponse> comments = new ArrayList<>();
 
     public PostResponse(Post post) {
         this.id = post.getId();
@@ -35,6 +35,10 @@ public class PostResponse {
         this.date = post.getDate();
         this.author = post.getAuthor();
         this.user = post.getUser();
-        this.comments = post.getComments();
+        this.comments = post.getComments()
+                .stream()
+                .map(CommentResponse::new)
+                .toList();;
     }
+
 }

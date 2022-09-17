@@ -1,7 +1,7 @@
 package com.example.springboard.controller;
 
 import com.example.springboard.domain.Post;
-import com.example.springboard.dto.PostListResponse;
+import com.example.springboard.dto.PostResponse;
 import com.example.springboard.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,9 +11,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +24,7 @@ public class HomeController {
                        Pageable pageable) {
 
         Page<Post> pageList = postService.pageList(pageable);
-        Page<PostListResponse> posts = pageList.map(PostListResponse::new);
+        Page<PostResponse> posts = pageList.map(PostResponse::new);
 
         model.addAttribute("totalPages", posts.getTotalPages() - 1);
         model.addAttribute("posts", posts);

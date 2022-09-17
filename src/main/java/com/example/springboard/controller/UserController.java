@@ -2,7 +2,7 @@ package com.example.springboard.controller;
 
 import com.example.springboard.domain.Role;
 import com.example.springboard.domain.User;
-import com.example.springboard.dto.PostListResponse;
+import com.example.springboard.dto.PostResponse;
 import com.example.springboard.dto.UserRequest;
 import com.example.springboard.dto.UserResponse;
 import com.example.springboard.service.UserService;
@@ -84,9 +84,9 @@ public class UserController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        List<PostListResponse> postList = user.getPosts()
+        List<PostResponse> postList = user.getPosts()
                 .stream()
-                .map(PostListResponse::new)
+                .map(PostResponse::new)
                 .toList();
 
         model.addAttribute("posts", postList);

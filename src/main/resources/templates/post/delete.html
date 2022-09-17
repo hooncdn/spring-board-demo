@@ -4,7 +4,7 @@
 <body class="flex flex-col justify-center items-center justify-center">
 <p class="text-green-600 text-xl font-semibold my-10">Delete post</p>
 
-<form th:action="@{/post/delete/{id}(id = ${id})}" method="post" class="flex flex-col items-end">
+<form th:action="@{/post/{id}/delete(id = ${id})}" method="post" class="flex flex-col items-end">
 
     <div class="flex justify-center">
         <button class="m-1 my-5 px-5 py-3 font-bold text-white bg-red-600 rounded-lg" type="submit">

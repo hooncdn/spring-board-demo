@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="fragments/head :: head (403)"></div>
+<div th:replace="fragments/head :: head (405)"></div>
 <body class="flex flex-col items-center justify-center h-screen">
-<p class="text-green-600 text-4xl font-bold">500 Internal server error</p>
+<p class="text-green-600 text-4xl font-bold">405 Method not allowed</p>
 <button class="my-5 px-5 py-3 font-bold text-white bg-green-600 rounded-lg" type="button"
         th:onclick="|location.href='@{/}'|">
     Return to home

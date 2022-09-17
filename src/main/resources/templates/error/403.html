@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:replace="fragments/head :: head (403)"></div>
-<body class="flex items-center justify-center h-screen">
+<body class="flex flex-col items-center justify-center h-screen">
 <p class="text-green-600 text-4xl font-bold">403 Forbidden</p>
+<button class="my-5 px-5 py-3 font-bold text-white bg-green-600 rounded-lg" type="button"
+        th:onclick="|location.href='@{/}'|">
+    Return to home
+</button>
 </body>
 </html>

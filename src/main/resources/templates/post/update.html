@@ -11,7 +11,7 @@
 <body class="flex flex-col items-center justify-center">
 <p class="text-green-600 text-xl font-semibold my-10">Update post</p>
 
-<form th:action="@{/post/update/{id}(id = ${post.id})}" th:object="${post}" method="post" class="flex flex-col items-end">
+<form th:action="@{/post/{id}/update(id = ${post.id})}" th:object="${post}" method="post" class="flex flex-col items-end">
     <input
             th:field="*{title}"
             th:value="${post.title}"
