@@ -14,7 +14,6 @@ public class CommentResponse {
     private Long id;
 
     private String writer;
-    @NotBlank
     private String content;
 
     private String date;

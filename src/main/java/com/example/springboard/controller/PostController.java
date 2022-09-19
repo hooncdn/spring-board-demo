@@ -40,24 +40,32 @@ public class PostController {
                 .toList();
 
         model.addAttribute("post", postResponse);
-        model.addAttribute("commentResponse", commentResponse);
+        model.addAttribute("content", commentResponse);
         model.addAttribute("comments", commentResponseList);
 
         return "post/view";
     }
 
     @PostMapping("/{id}")
-    public String comment(@Valid @ModelAttribute(value = "comment") CommentRequest commentRequest, BindingResult bindingResult, Model model, @PathVariable Long id) {
+    public String comment(@Valid @ModelAttribute(value = "content") CommentRequest commentRequest, BindingResult bindingResult, Model model, @PathVariable Long id) {
 
         Post post = postService.findById(id);
 
         if (bindingResult.hasErrors()) {
             PostResponse postResponse = new PostResponse(post);
+            List<CommentResponse> commentResponseList = post.getComments()
+                    .stream()
+                    .map(CommentResponse::new)
+                    .toList();
+
             model.addAttribute("post", postResponse);
-            return "/post/view";
+            model.addAttribute("comments", commentResponseList);
+
+            return "post/view";
         }
 
-        User user = post.getUser();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
 
         LocalDateTime date = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm:ss");

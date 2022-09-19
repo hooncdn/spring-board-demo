@@ -54,7 +54,6 @@ public class PostService {
         post.increaseViews(1);
     }
 
-    @Transactional
     public Page<Post> pageList(Pageable pageable) {
         return postRepository.findAll(pageable);
     }

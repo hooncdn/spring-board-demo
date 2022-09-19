@@ -84,7 +84,7 @@
     </button>
 </div>
 
-<form method="post" th:action="@{/post/{id}(id = ${post.id})}" th:object="${commentResponse}" class="w-4/6 mt-2">
+<form method="post" th:action="@{/post/{id}(id = ${post.id})}" th:object="${content}" class="w-4/6 mt-2">
     <div class="mb-4 w-full bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
         <div class="py-2 px-4 bg-white rounded-t-lg dark:bg-gray-800">
             <label for="content"></label>
@@ -101,7 +101,8 @@
 
 <div th:each="comment : ${comments}" class="flex-1 my-1 w-4/6 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
     <strong th:text="${comment.writer}"></strong> <span th:text="${comment.date}" class="text-xs text-gray-400"></span>
-    <form th:id="'comment' + ${comment.id}" style="display: none">
+
+    <form th:id="'comment-edit-'+${comment.id}" style="display: none">
         <label for="comment"></label>
         <textarea
                 th:text="${comment.content}"
@@ -111,20 +112,33 @@
                 class="px-0 w-full text-sm text-gray-900 rounded bg-white border dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                 placeholder="Write a comment..."
         ></textarea>
-        <button type="submit" class="inline-flex font-bold m-1 items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-green-600 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-900 hover:bg-green-800">
-            submit
-        </button>
+        <div class="flex">
+            <button type="submit" class="inline-flex font-bold mt-1 mr-1 items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-green-600 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-900 hover:bg-green-800">
+                submit
+            </button>
+            <div th:id="'comment-edit-cancel-'+${comment.id}" class="inline-flex font-bold mt-1 mr-1 items-center py-2.5 px-4 text-xs font-medium text-center text-green-600 border bg-white border-green-600 cursor-pointer border-2 rounded-lg">cancel</div>
+            <script>
+                document.getElementById("comment-edit-cancel-[[${comment.id}]]").onclick = function () {
+                    document.getElementById("comment-edit-[[${comment.id}]]").style.display = "none";
+                    document.getElementById("comment-content-[[${comment.id}]]").style.display = "block";
+                };
+            </script>
+        </div>
     </form>
-    <div style="display: none" class="flex">
-        <button class="bg-white border-gray-500 border rounded p-1">cancel</button>
-    </div>
-    <p th:text="${comment.content}" class="text-sm"></p>
+
+    <p th:id="'comment-content-'+${comment.id}" th:text="${comment.content}" class="text-sm"></p>
     <div th:if="${#authentication.getPrincipal().getUsername() == comment.writer}" class="flex justify-end">
         <button
-                id="update"
                 class="z-20 mr-1 block p-4 text-blue-700 bg-blue-100 border-2 border-white rounded-full transition-all active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
+                th:id="'comment-'+${comment.id}"
                 type="button"
         >
+            <script>
+                document.getElementById("comment-[[${comment.id}]]").onclick = function () {
+                    document.getElementById("comment-edit-[[${comment.id}]]").style.display = "block";
+                    document.getElementById("comment-content-[[${comment.id}]]").style.display = "none";
+                };
+            </script>
             <svg
                     class="w-4 h-4"
                     xmlns="http://www.w3.org/2000/svg"
@@ -161,9 +175,5 @@
         </button>
     </div>
 </div>
-
-
-
-
 </body>
 </html>
