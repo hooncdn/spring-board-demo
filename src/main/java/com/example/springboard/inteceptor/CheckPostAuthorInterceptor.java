@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class CheckWriterInterceptor implements HandlerInterceptor {
+public class CheckPostAuthorInterceptor implements HandlerInterceptor {
 
     private final PostService postService;
 

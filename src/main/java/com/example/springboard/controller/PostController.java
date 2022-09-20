@@ -41,6 +41,7 @@ public class PostController {
 
         model.addAttribute("post", postResponse);
         model.addAttribute("content", commentResponse);
+        model.addAttribute("comment", new CommentResponse());
         model.addAttribute("comments", commentResponseList);
 
         return "post/view";
@@ -59,6 +60,7 @@ public class PostController {
                     .toList();
 
             model.addAttribute("post", postResponse);
+            model.addAttribute("comment", new CommentResponse());
             model.addAttribute("comments", commentResponseList);
 
             return "post/view";
@@ -83,6 +85,32 @@ public class PostController {
 
         return "redirect:/post/{id}";
     }
+
+    @PostMapping("/{id}/comment/{commentId}/update")
+    public String commentUpdate(@Valid @ModelAttribute(value = "comment") CommentRequest commentRequest, BindingResult bindingResult, @PathVariable Long id, @PathVariable Long commentId, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            Post post = postService.findById(id);
+
+            PostResponse postResponse = new PostResponse(post);
+            CommentResponse commentResponse = new CommentResponse();
+            List<CommentResponse> commentResponseList = post.getComments()
+                    .stream()
+                    .map(CommentResponse::new)
+                    .toList();
+
+            model.addAttribute("post", postResponse);
+            model.addAttribute("content", commentResponse);
+            model.addAttribute("comments", commentResponseList);
+            return "post/view";
+        }
+
+        postService.updateComment(commentId, commentRequest.getContent());
+
+
+        return "redirect:/post/{id}";
+    }
+
 
     @GetMapping("/create")
     public String createForm(Model model) {

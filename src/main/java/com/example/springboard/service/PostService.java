@@ -2,6 +2,7 @@ package com.example.springboard.service;
 
 import com.example.springboard.domain.Comment;
 import com.example.springboard.domain.Post;
+import com.example.springboard.repository.CommentRepository;
 import com.example.springboard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public void save(Post post) {
@@ -29,6 +31,13 @@ public class PostService {
 
         findPost.update(title, content);
 
+    }
+
+    @Transactional
+    public void updateComment(Long id, String content) {
+        Comment findComment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("The comment is missing"));
+        findComment.update(content);
     }
 
     @Transactional

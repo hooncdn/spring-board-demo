@@ -40,4 +40,8 @@ public class Comment {
         user.getComments().add(this);
         post.getComments().add(this);
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

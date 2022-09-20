@@ -88,7 +88,7 @@
     <div class="mb-4 w-full bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
         <div class="py-2 px-4 bg-white rounded-t-lg dark:bg-gray-800">
             <label for="content"></label>
-            <textarea th:field="*{content}" id="content" name="content" rows="4" class="px-0 w-full text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..."></textarea>
+            <textarea th:field="*{content}" id="content" name="content" rows="4" class="outline-none px-0 w-full text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..."></textarea>
         </div>
         <p th:if="${#fields.hasErrors('content')}" class="text-red-600 text-sm" th:errors="*{content}"></p>
         <div class="flex justify-between items-center py-2 px-3 border-t dark:border-gray-600">
@@ -102,16 +102,19 @@
 <div th:each="comment : ${comments}" class="flex-1 my-1 w-4/6 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
     <strong th:text="${comment.writer}"></strong> <span th:text="${comment.date}" class="text-xs text-gray-400"></span>
 
-    <form th:id="'comment-edit-'+${comment.id}" style="display: none">
-        <label for="comment"></label>
+    <form th:action="@{/post/{id}/comment/__${comment.id}__/update(id = ${post.id})}" th:object="${comment}" method="post" th:id="'comment-edit-'+${comment.id}" style="display: none">
+        <label for="commentContent"></label>
         <textarea
+                th:field="*{content}"
                 th:text="${comment.content}"
-                id="comment"
-                name="comment"
+                id="commentContent"
+                name="content"
                 rows="2"
-                class="px-0 w-full text-sm text-gray-900 rounded bg-white border dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                class="outline-none px-0 w-full text-sm text-gray-900 rounded bg-white border dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                 placeholder="Write a comment..."
+                required
         ></textarea>
+        <p th:if="${#fields.hasErrors('content')}" class="text-red-600 text-sm" th:errors="*{content}"></p>
         <div class="flex">
             <button type="submit" class="inline-flex font-bold mt-1 mr-1 items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-green-600 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-900 hover:bg-green-800">
                 submit
