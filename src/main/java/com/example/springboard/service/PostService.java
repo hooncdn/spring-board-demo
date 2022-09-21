@@ -53,6 +53,11 @@ public class PostService {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
+    public Comment findByCommentId(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
     @Transactional(readOnly = true)
     public List<Post> findAll() {
         return postRepository.findAll();
@@ -72,6 +77,13 @@ public class PostService {
         Optional<Post> post = postRepository.findById(id);
 
         return post.isPresent();
+
+    }
+    public boolean validateCommentId(Long id) {
+
+        Optional<Comment> comment = commentRepository.findById(id);
+
+        return comment.isPresent();
 
     }
 

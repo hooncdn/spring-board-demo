@@ -105,8 +105,8 @@
     <form th:action="@{/post/{id}/comment/__${comment.id}__/update(id = ${post.id})}" th:object="${comment}" method="post" th:id="'comment-edit-'+${comment.id}" style="display: none">
         <label for="commentContent"></label>
         <textarea
-                th:field="*{content}"
                 th:text="${comment.content}"
+                th:field="*{content}"
                 id="commentContent"
                 name="content"
                 rows="2"
