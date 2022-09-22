@@ -92,5 +92,12 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    @Transactional
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(IllegalAccessError::new);
+        commentRepository.delete(comment);
+    }
+
 
 }

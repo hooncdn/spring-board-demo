@@ -19,6 +19,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(checkPostAuthorInterceptor)
                 .addPathPatterns("/post/{id}/update/**", "/post/{id}/delete/**");
         registry.addInterceptor(checkCommentWriterInterceptor)
-                .addPathPatterns("/post/{id}/comment/{commentId}/update/**");
+                .addPathPatterns("/post/{id}/comment/{commentId}/update/**", "/post/{id}/comment/{commentId}/delete/**");
     }
 }

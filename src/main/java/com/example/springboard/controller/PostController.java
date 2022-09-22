@@ -87,7 +87,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/comment/{commentId}/update")
-    public String commentUpdate(@Valid @ModelAttribute(value = "comment") CommentRequest commentRequest, BindingResult bindingResult, @PathVariable Long id, @PathVariable Long commentId, Model model) {
+    public String updateComment(@Valid @ModelAttribute(value = "comment") CommentRequest commentRequest, BindingResult bindingResult, @PathVariable Long id, @PathVariable Long commentId, Model model) {
 
         if (bindingResult.hasErrors()) {
             Post post = postService.findById(id);
@@ -107,6 +107,20 @@ public class PostController {
 
         postService.updateComment(commentId, commentRequest.getContent());
 
+
+        return "redirect:/post/{id}";
+    }
+
+    @PostMapping("/{id}/comment/{commentId}/delete")
+    public String deleteComment(@PathVariable Long id, @PathVariable Long commentId) {
+
+        Comment comment = postService.findByCommentId(commentId);
+
+        if (comment == null) {
+            return "error/404";
+        }
+
+        postService.deleteComment(commentId);
 
         return "redirect:/post/{id}";
     }
