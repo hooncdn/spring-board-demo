@@ -1,7 +1,9 @@
 package com.example.springboard.inteceptor;
 
 import com.example.springboard.domain.Post;
+import com.example.springboard.domain.User;
 import com.example.springboard.service.PostService;
+import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CheckPostAuthorInterceptor implements HandlerInterceptor {
 
+    private final UserService userService;
     private final PostService postService;
 
     @Override
@@ -36,9 +39,13 @@ public class CheckPostAuthorInterceptor implements HandlerInterceptor {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String author = post.getAuthor();
 
-        if (!username.equals(author)) {
-            response.sendRedirect("/error/403");
-            return false;
+        User user = userService.findByUsername(username);
+
+        if (!user.getRole().getValue().equals("ROLE_ADMIN")) {
+            if (!username.equals(author)) {
+                response.sendRedirect("/error/403");
+                return false;
+            }
         }
 
         return true;

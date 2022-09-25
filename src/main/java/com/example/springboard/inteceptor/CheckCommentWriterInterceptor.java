@@ -1,7 +1,9 @@
 package com.example.springboard.inteceptor;
 
 import com.example.springboard.domain.Comment;
+import com.example.springboard.domain.User;
 import com.example.springboard.service.PostService;
+import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CheckCommentWriterInterceptor implements HandlerInterceptor {
 
+    private final UserService userService;
     private final PostService postService;
 
     @Override
@@ -35,9 +38,13 @@ public class CheckCommentWriterInterceptor implements HandlerInterceptor {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String writer = comment.getWriter();
 
-        if (!username.equals(writer)) {
-            response.sendRedirect("/error/403");
-            return false;
+        User user = userService.findByUsername(username);
+
+        if (!user.getRole().getValue().equals("ROLE_ADMIN")) {
+            if (!username.equals(writer)) {
+                response.sendRedirect("/error/403");
+                return false;
+            }
         }
 
 

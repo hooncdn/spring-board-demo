@@ -7,6 +7,10 @@ import com.example.springboard.dto.*;
 import com.example.springboard.service.PostService;
 import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +30,20 @@ public class PostController {
 
     private final UserService userService;
     private final PostService postService;
+
+    @GetMapping
+    public String home(Model model,
+                       @PageableDefault(size = 10, sort = "views", direction = Sort.Direction.DESC)
+                       Pageable pageable) {
+
+        Page<Post> pageList = postService.pageList(pageable);
+        Page<PostResponse> posts = pageList.map(PostResponse::new);
+
+        model.addAttribute("totalPages", posts.getTotalPages() - 1);
+        model.addAttribute("posts", posts);
+
+        return "post/list";
+    }
 
     @GetMapping("/{id}")
     public String viewForm(@PathVariable Long id, Model model) {
