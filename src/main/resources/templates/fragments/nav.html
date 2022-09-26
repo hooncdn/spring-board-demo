@@ -15,6 +15,11 @@
                 Post
             </a>
         </li>
+        <li>
+            <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/dashboard') ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/dashboard/users}">
+                Dashboard
+            </a>
+        </li>
         <li sec:authorize="isAuthenticated()">
             <a th:classappend="${#httpServletRequest.getRequestURI() == '/my' ? 'text-green-600' : ''}" class="px-3 text-base font-semibold" th:href="@{/my}">
                 My

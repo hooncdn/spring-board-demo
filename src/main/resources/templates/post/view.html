@@ -3,7 +3,7 @@
 <div th:replace="fragments/head :: head (${post.title})"></div>
 <body class="flex flex-col items-center justify-center">
 <div th:replace="fragments/nav :: nav"></div>
-<div class="overflow-hidden overflow-x-auto border w-4/6 mt-5">
+<div class="overflow-hidden overflow-x-auto border w-2/3 mt-5">
     <table class="min-w-full text-sm divide-y divide-gray-200">
         <thead>
         <tr class="bg-gray-50">
@@ -40,8 +40,8 @@
         </tbody>
     </table>
 </div>
-<div th:utext="${post.content}" class="flex flex-col w-4/6 border-b border-l border-r p-5"></div>
-<div th:if="${#authentication.getPrincipal().getUsername() == post.author || #authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="flex w-4/6 m-2 justify-end">
+<div th:utext="${post.content}" class="flex flex-col w-2/3 border-b border-l border-r p-5"></div>
+<div th:if="${#authentication.getPrincipal().getUsername() == post.author || #authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="flex w-2/3 m-2 justify-end">
     <button
             class="z-20 mr-1 block p-4 text-blue-700 bg-blue-100 border-2 border-white rounded-full transition-all active:bg-blue-50 hover:scale-110 focus:outline-none focus:ring"
             th:onclick="|location.href='@{/post/{id}/update(id = ${post.id})}'|"
@@ -84,7 +84,7 @@
     </button>
 </div>
 
-<form method="post" th:action="@{/post/{id}(id = ${post.id})}" th:object="${content}" class="w-4/6 mt-2">
+<form method="post" th:action="@{/post/{id}(id = ${post.id})}" th:object="${content}" class="w-2/3 mt-2">
     <div class="mb-4 w-full bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-700 dark:border-gray-600">
         <div class="py-2 px-4 bg-white rounded-t-lg dark:bg-gray-800">
             <label for="content"></label>
