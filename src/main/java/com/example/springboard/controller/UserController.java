@@ -1,13 +1,19 @@
 package com.example.springboard.controller;
 
+import com.example.springboard.domain.Post;
 import com.example.springboard.domain.Role;
 import com.example.springboard.domain.User;
 import com.example.springboard.dto.PostResponse;
 import com.example.springboard.dto.UserRequest;
 import com.example.springboard.dto.UserResponse;
+import com.example.springboard.service.PostService;
 import com.example.springboard.service.UserService;
 import com.example.springboard.validator.SignUpValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +37,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
     private final SignUpValidator signUpValidator;
     private final PasswordEncoder passwordEncoder;
 
@@ -80,16 +87,18 @@ public class UserController {
     }
 
     @GetMapping("/my")
-    public String myPage(Model model) {
+    public String myPage(Model model,
+                         @PageableDefault(size = 5, sort = "views", direction = Sort.Direction.DESC)
+                         Pageable pageable) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
 
-        List<PostResponse> postList = user.getPosts()
-                .stream()
-                .map(PostResponse::new)
-                .toList();
+        Page<Post> pageList = postService.findAllByUser(user, pageable);
+        Page<PostResponse> posts = pageList.map(PostResponse::new);
 
-        model.addAttribute("posts", postList);
+
+        model.addAttribute("totalPages", posts.getTotalPages() - 1);
+        model.addAttribute("posts", posts);
 
         return "/post/my";
 

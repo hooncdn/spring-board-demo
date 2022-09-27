@@ -20,7 +20,7 @@ public class HomeController {
 
     @GetMapping
     public String home(Model model,
-                       @PageableDefault(size = 5, sort = "views", direction = Sort.Direction.DESC)
+                       @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC)
                        Pageable pageable) {
 
         Page<Post> pageList = postService.pageList(pageable);
