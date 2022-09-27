@@ -41,6 +41,7 @@ public class PostController {
 
         model.addAttribute("totalPages", posts.getTotalPages() - 1);
         model.addAttribute("posts", posts);
+        model.addAttribute("title", "Post");
 
         return "post/list";
     }
@@ -216,5 +217,19 @@ public class PostController {
         postService.delete(post);
 
         return "redirect:/my";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("title") String title,
+                         @PageableDefault(size = 10)
+                         Pageable pageable, Model model) {
+        Page<Post> pageList = postService.findAllByTitle(title, pageable);
+        Page<PostResponse> posts = pageList.map(PostResponse::new);
+
+        model.addAttribute("totalPages", posts.getTotalPages() - 1);
+        model.addAttribute("posts", posts);
+        model.addAttribute("title", title);
+
+        return "post/list";
     }
 }

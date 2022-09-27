@@ -3,7 +3,7 @@
 <ol th:fragment="pagination" class="flex justify-center mt-20 text-xs font-medium space-x-1">
   <li>
     <a
-            th:href="${posts.first} ? '' : '/post/?page='+${posts.number - 1}"
+            th:href="${posts.first} ? '' : '/post/search/'+${title}+'?page='+${posts.number - 1}"
             class="inline-flex items-center justify-center w-8 h-8 border border-gray-100 rounded"
     >
       <svg
@@ -24,7 +24,7 @@
   <th:block th:each="page : ${#numbers.sequence(0, __${totalPages}__)}">
     <li>
       <a
-              th:href="@{/post/(page=${pageStat.index})}"
+              th:href="${posts.last} ? '' : '/post/search/'+${title}+'?page='+${pageStat.index}"
               th:text="${pageStat.count}"
               th:classappend="${page == posts.number} ? 'bg-green-600 text-white'"
               class="block w-8 h-8 text-center border border-gray-100 rounded leading-8"
@@ -34,7 +34,7 @@
 
   <li>
     <a
-            th:href="${posts.last} ? '' : '/post/?page='+${posts.number + 1}"
+            th:href="${posts.last} ? '' : '/post/search/'+${title}+'?page='+${posts.number + 1}"
             class="inline-flex items-center justify-center w-8 h-8 border border-gray-100 rounded"
     >
       <svg

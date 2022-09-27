@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:replace="fragments/head :: head (Home)"></div>
+<div th:replace="fragments/head :: head (Post)"></div>
 <body class="flex flex-col items-center">
 <div th:replace="fragments/nav :: nav"></div>
-<div class="relative mt-5">
-    <input class="h-10 border border-green-600 outline-none pr-10 pl-5 text-sm placeholder-gray-300 rounded-lg focus:z-10" placeholder="Search..." type="text">
+<form action="/post/search" id="form" method="get">
+    <div class="relative mt-5">
+        <input id="input" name="title" class="h-10 border border-green-600 outline-none pr-10 pl-5 text-sm placeholder-gray-300 rounded-lg focus:z-10" placeholder="Search..." type="text">
 
-    <button class="absolute inset-y-0 right-0 p-2 mr-px text-gray-600 rounded-r-lg" type="submit">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" fill-rule="evenodd"></path>
-        </svg>
-    </button>
-</div>
+        <button id="submit" class="absolute inset-y-0 right-0 p-2 mr-px text-gray-600 rounded-r-lg">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" fill-rule="evenodd"></path>
+            </svg>
+        </button>
+
+    </div>
+</form>
 <div class="flex my-2 items-center -space-x-4 hover:space-x-1">
     <button
             class="z-10 block p-4 text-green-700 bg-green-100 border-2 border-white rounded-full transition-all active:bg-green-50 hover:scale-110 focus:outline-none focus:ring"

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
     Page<Post> findAllByUser(User user, Pageable pageable);
+    Page<Post> findAllByTitle(String title, Pageable pageable);
 }
