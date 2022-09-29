@@ -2,6 +2,7 @@ package com.example.springboard.controller;
 
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.Role;
+import com.example.springboard.domain.Status;
 import com.example.springboard.domain.User;
 import com.example.springboard.dto.PostResponse;
 import com.example.springboard.dto.UserRequest;
@@ -78,6 +79,7 @@ public class UserController {
                 .username(userRequest.getUsername())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
                 .role(Role.USER)
+                .status(Status.NORMAL)
                 .build();
 
 

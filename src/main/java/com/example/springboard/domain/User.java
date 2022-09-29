@@ -23,6 +23,9 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
@@ -32,11 +35,12 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public User(Long id, String username, String password, Role role) {
+    public User(Long id, String username, String password, Role role, Status status) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
+        this.status = status;
     }
 
 }
