@@ -43,4 +43,8 @@ public class User {
         this.status = status;
     }
 
+    public void banUser() {
+        this.status = Status.BANNED;
+    }
+
 }

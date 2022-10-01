@@ -11,8 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +33,13 @@ public class AdminController {
         model.addAttribute("users", users);
 
         return "dashboard/users";
+    }
+
+    @PostMapping("/ban/{username}")
+    public String ban(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        userService.banUser(user);
+
+        return "redirect:/dashboard/ban/{username}";
     }
 }

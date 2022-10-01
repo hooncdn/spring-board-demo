@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +30,11 @@ public class UserService {
     public Page<User> pageList(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
+
+    @Transactional
+    public void banUser(User user) {
+        user.banUser();
+    }
+
 
 }

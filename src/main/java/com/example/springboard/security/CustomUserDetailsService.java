@@ -2,11 +2,15 @@ package com.example.springboard.security;
 
 import com.example.springboard.domain.User;
 import com.example.springboard.repository.UserRepository;
-import com.example.springboard.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -22,6 +26,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Username does not exist.");
         }
 
-        return UserPrincipal.create(user);
+        List<GrantedAuthority> authorities = Collections
+                .singletonList(new SimpleGrantedAuthority(user.getRole().getValue()));
+
+        return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), authorities, user.getStatus());
     }
 }

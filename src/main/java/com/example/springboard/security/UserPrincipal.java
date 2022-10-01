@@ -1,9 +1,8 @@
 package com.example.springboard.security;
 
-import com.example.springboard.domain.Role;
+import com.example.springboard.domain.Status;
 import com.example.springboard.domain.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 @Getter
-@RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
 
     private final Long id;
@@ -19,11 +17,14 @@ public class UserPrincipal implements UserDetails {
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public static UserPrincipal create(User user) {
-        List<GrantedAuthority> authorities = Collections
-                .singletonList(new SimpleGrantedAuthority(user.getRole().getValue()));
+    private final Status status;
 
-        return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), authorities);
+    public UserPrincipal(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities, Status status) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+        this.status = status;
     }
 
     @Override
@@ -58,6 +59,8 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !status.getValue().equals("STATUS_BANNED");
     }
+
+
 }

@@ -35,7 +35,7 @@ public class SecurityConfig {
 
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/join")
+                    .antMatchers("/", "/join","/error/**")
                         .permitAll()
                     .antMatchers("/dashboard/**")
                         .hasRole("ADMIN")
