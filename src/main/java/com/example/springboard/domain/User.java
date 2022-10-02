@@ -47,4 +47,7 @@ public class User {
         this.status = Status.BANNED;
     }
 
+    public void unbanUser() {
+        this.status = Status.NORMAL;
+    }
 }

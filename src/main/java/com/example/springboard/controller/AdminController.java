@@ -40,6 +40,14 @@ public class AdminController {
         User user = userService.findByUsername(username);
         userService.banUser(user);
 
-        return "redirect:/dashboard/ban/{username}";
+        return "redirect:/dashboard/users";
+    }
+
+    @PostMapping("/unban/{username}")
+    public String unban(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        userService.unbanUser(user);
+
+        return "redirect:/dashboard/users";
     }
 }

@@ -36,5 +36,10 @@ public class UserService {
         user.banUser();
     }
 
+    @Transactional
+    public void unbanUser(User user) {
+        user.unbanUser();
+    }
+
 
 }
