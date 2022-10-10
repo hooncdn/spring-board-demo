@@ -104,8 +104,4 @@ public class PostService {
         return postRepository.findAllByUser(user, pageable);
     }
 
-    public Page<Post> findAllByTitle(String title, Pageable pageable) {
-        return postRepository.findAllByTitle(title, pageable);
-    }
-
 }
