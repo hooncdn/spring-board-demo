@@ -33,15 +33,13 @@ public class PostController {
 
     @GetMapping
     public String home(Model model,
-                       @PageableDefault(size = 10, sort = "views", direction = Sort.Direction.DESC)
+                       @PageableDefault(sort = "views", direction = Sort.Direction.DESC)
                        Pageable pageable) {
 
-        Page<Post> pageList = postService.pageList(pageable);
-        Page<PostResponse> posts = pageList.map(PostResponse::new);
+        Page<Post> postList = postService.findAll(pageable);
+        Page<PostResponse> posts = postList.map(PostResponse::new);
 
-        model.addAttribute("totalPages", posts.getTotalPages() - 1);
         model.addAttribute("posts", posts);
-        model.addAttribute("title", "Post");
 
         return "post/list";
     }
@@ -217,6 +215,20 @@ public class PostController {
         postService.delete(post);
 
         return "redirect:/my";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam String title,
+                         @PageableDefault(size = 5, sort = "views", direction = Sort.Direction.DESC) Pageable pageable,
+                         Model model) {
+
+        Page<Post> searchList = postService.findByTitleContaining(title, pageable);
+        Page<PostResponse> posts = searchList.map(PostResponse::new);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("title", title);
+
+        return "post/searchList";
     }
 
 }

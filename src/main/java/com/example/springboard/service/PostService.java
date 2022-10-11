@@ -104,4 +104,17 @@ public class PostService {
         return postRepository.findAllByUser(user, pageable);
     }
 
+    public Page<Post> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable);
+    }
+
+    public Page<Post> findByTitleContaining(String title, Pageable pageable) {
+        return postRepository.findByTitleContaining(title, pageable);
+    }
+
+    public Page<Comment> findAllByPost(Post post, Pageable pageable){
+        return commentRepository.findAllByPost(post, pageable);
+    }
+
+
 }

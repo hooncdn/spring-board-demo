@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:replace="fragments/head :: head (Post)"></div>
+<div th:replace="fragments/head :: head (${title})"></div>
 <body class="flex flex-col items-center">
 <div th:replace="fragments/nav :: nav"></div>
 <form action="/post/search" id="form" method="get">
@@ -64,7 +64,7 @@
 <ol class="flex justify-center mt-20 text-xs font-medium space-x-1">
     <li>
         <a
-                th:href="${posts.first} ? '' : '/post?page='+${posts.number - 1}"
+                th:href="${posts.first} ? '' : '/post/search?title='+${title}+'&page='+${posts.number - 1}"
                 class="inline-flex items-center justify-center w-8 h-8 border border-gray-100 rounded"
         >
             <svg
@@ -84,7 +84,7 @@
     <th:block th:each="page : ${#numbers.sequence(0, __${posts.getTotalPages() == 0 ? posts.getTotalPages() : posts.getTotalPages() - 1}__)}">
         <li>
             <a
-                    th:href="@{/post?page=__${pageStat.index}__}"
+                    th:href="@{/post/search?title=__${title}__&page=__${pageStat.index}__}"
                     th:text="${pageStat.count}"
                     th:classappend="${page == posts.number} ? 'bg-green-600 text-white'"
                     class="block w-8 h-8 text-center border border-gray-100 rounded leading-8"
@@ -93,7 +93,7 @@
     </th:block>
     <li>
         <a
-                th:href="${posts.last} ? '' : '/post?page='+${posts.number + 1}"
+                th:href="${posts.last} ? '' : '/post/search?title='+${title}+'&page='+${posts.number + 1}"
                 class="inline-flex items-center justify-center w-8 h-8 border border-gray-100 rounded"
         >
             <svg
