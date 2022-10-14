@@ -2,6 +2,7 @@ package com.example.springboard.inteceptor;
 
 import com.example.springboard.domain.Comment;
 import com.example.springboard.domain.User;
+import com.example.springboard.service.CommentService;
 import com.example.springboard.service.PostService;
 import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class CheckCommentWriterInterceptor implements HandlerInterceptor {
 
     private final UserService userService;
     private final PostService postService;
+    private final CommentService commentService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -28,12 +30,12 @@ public class CheckCommentWriterInterceptor implements HandlerInterceptor {
 
         Long commentId = Long.valueOf(pathVariable.toString());
 
-        if (!postService.validateCommentId(commentId)) {
+        if (!commentService.validateCommentId(commentId)) {
             response.sendRedirect("/error/404");
             return false;
         }
 
-        Comment comment = postService.findByCommentId(commentId);
+        Comment comment = commentService.findByCommentId(commentId);
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String writer = comment.getWriter();

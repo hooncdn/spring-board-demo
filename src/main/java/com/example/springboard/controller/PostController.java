@@ -4,6 +4,7 @@ import com.example.springboard.domain.Comment;
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.User;
 import com.example.springboard.dto.*;
+import com.example.springboard.service.CommentService;
 import com.example.springboard.service.PostService;
 import com.example.springboard.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class PostController {
 
     private final UserService userService;
     private final PostService postService;
+    private final CommentService commentService;
 
     @GetMapping
     public String home(Model model,
@@ -98,7 +100,7 @@ public class PostController {
                 .build();
 
 
-        postService.uploadComment(id, comment);
+        commentService.uploadComment(id, comment);
 
         return "redirect:/post/{id}";
     }
@@ -122,7 +124,7 @@ public class PostController {
             return "post/view";
         }
 
-        postService.updateComment(commentId, commentRequest.getContent());
+        commentService.updateComment(commentId, commentRequest.getContent());
 
 
         return "redirect:/post/{id}";
@@ -131,13 +133,13 @@ public class PostController {
     @PostMapping("/{id}/comment/{commentId}/delete")
     public String deleteComment(@PathVariable Long id, @PathVariable Long commentId) {
 
-        Comment comment = postService.findByCommentId(commentId);
+        Comment comment = commentService.findByCommentId(commentId);
 
         if (comment == null) {
             return "error/404";
         }
 
-        postService.deleteComment(commentId);
+        commentService.deleteComment(commentId);
 
         return "redirect:/post/{id}";
     }

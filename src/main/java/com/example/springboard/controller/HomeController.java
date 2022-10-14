@@ -23,7 +23,7 @@ public class HomeController {
                        @PageableDefault(size = 5, sort = "views", direction = Sort.Direction.DESC)
                        Pageable pageable) {
 
-        Page<Post> pageList = postService.pageList(pageable);
+        Page<Post> pageList = postService.findALl(pageable);
         Page<PostResponse> posts = pageList.map(PostResponse::new);
 
         model.addAttribute("totalPages", posts.getTotalPages() - 1);

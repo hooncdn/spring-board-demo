@@ -18,7 +18,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
 
     @Transactional
     public void save(Post post) {
@@ -27,65 +26,8 @@ public class PostService {
 
     @Transactional
     public void update(Long id, String title, String content) {
-        Post findPost = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("The post is missing"));
-
+        Post findPost = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("The post is missing"));
         findPost.update(title, content);
-
-    }
-
-    @Transactional
-    public void updateComment(Long id, String content) {
-        Comment findComment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("The comment is missing"));
-        findComment.update(content);
-    }
-
-    @Transactional
-    public void uploadComment(Long id, Comment comment) {
-        Post findPost = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("The content is missing"));
-
-        findPost.addComment(comment);
-    }
-
-    public Post findById(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(IllegalArgumentException::new);
-    }
-
-    public Comment findByCommentId(Long id) {
-        return commentRepository.findById(id)
-                .orElseThrow(IllegalArgumentException::new);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Post> findAll() {
-        return postRepository.findAll();
-    }
-
-    @Transactional
-    public void increaseView(Post post) {
-        post.increaseViews(1);
-    }
-
-    public Page<Post> pageList(Pageable pageable) {
-        return postRepository.findAll(pageable);
-    }
-
-    public boolean validateId(Long id) {
-
-        Optional<Post> post = postRepository.findById(id);
-
-        return post.isPresent();
-
-    }
-    public boolean validateCommentId(Long id) {
-
-        Optional<Comment> comment = commentRepository.findById(id);
-
-        return comment.isPresent();
-
     }
 
     @Transactional
@@ -93,11 +35,13 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    @Transactional
-    public void deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(IllegalAccessError::new);
-        commentRepository.delete(comment);
+    public Post findById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public Page<Post> findALl(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     public Page<Post> findAllByUser(User user, Pageable pageable) {
@@ -112,9 +56,13 @@ public class PostService {
         return postRepository.findByTitleContaining(title, pageable);
     }
 
-    public Page<Comment> findAllByPost(Post post, Pageable pageable){
-        return commentRepository.findAllByPost(post, pageable);
+    @Transactional
+    public void increaseView(Post post) {
+        post.increaseViews(1);
     }
 
-
+    public boolean validateId(Long id) {
+        Optional<Post> post = postRepository.findById(id);
+        return post.isPresent();
+    }
 }
