@@ -1,9 +1,7 @@
 package com.example.springboard.service;
 
-import com.example.springboard.domain.Comment;
 import com.example.springboard.domain.Post;
 import com.example.springboard.domain.User;
-import com.example.springboard.repository.CommentRepository;
 import com.example.springboard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
